@@ -1,0 +1,125 @@
+!DOCTYPE html
+html lang=zh-CN
+head
+    meta charset=UTF-8
+    title数字字母组合查重系统title
+    style
+        body {
+            font-family Arial, sans-serif;
+            max-width 800px;
+            margin 20px auto;
+            padding 20px;
+        }
+        .container {
+            border 1px solid #ccc;
+            padding 20px;
+            border-radius 5px;
+        }
+        input {
+            padding 8px;
+            width 200px;
+            margin-right 10px;
+        }
+        button {
+            padding 8px 16px;
+            background-color #4CAF50;
+            color white;
+            border none;
+            border-radius 4px;
+            cursor pointer;
+        }
+        buttonhover {
+            background-color #45a049;
+        }
+        #message {
+            margin-top 10px;
+            min-height 20px;
+        }
+        #list {
+            margin-top 20px;
+        }
+        .error {
+            color red;
+        }
+        .success {
+            color green;
+        }
+    style
+head
+body
+    div class=container
+        h2数字字母组合录入系统h2
+        input type=text id=inputValue placeholder=输入数字字母组合
+        button onclick=checkDuplicate()提交button
+        div id=messagediv
+        div id=list
+            h3已录入的组合：h3
+            ul id=uniqueListul
+        div
+    div
+
+    script
+         存储唯一值的数组
+        let uniqueValues = [];
+
+        function checkDuplicate() {
+            const inputElement = document.getElementById('inputValue');
+            const messageElement = document.getElementById('message');
+            const inputValue = inputElement.value.trim();
+            
+             清空提示信息
+            messageElement.innerHTML = '';
+            messageElement.className = '';
+
+             输入验证
+            if (!inputValue) {
+                showMessage('输入不能为空', 'error');
+                return;
+            }
+
+             使用正则表达式验证格式（只允许字母和数字）
+            const pattern = ^[a-zA-Z0-9]+$;
+            if (!pattern.test(inputValue)) {
+                showMessage('只能包含字母和数字', 'error');
+                return;
+            }
+
+             检查是否重复
+            if (uniqueValues.includes(inputValue)) {
+                showMessage('组合已存在，不能重复录入', 'error');
+            } else {
+                 添加新值
+                uniqueValues.push(inputValue);
+                updateList();
+                showMessage('录入成功！', 'success');
+                inputElement.value = '';  清空输入框
+            }
+        }
+
+        function showMessage(text, className) {
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = text;
+            messageElement.className = className;
+        }
+
+        function updateList() {
+            const listElement = document.getElementById('uniqueList');
+             清空列表
+            listElement.innerHTML = '';
+             重新生成列表项
+            uniqueValues.forEach(value = {
+                const li = document.createElement('li');
+                li.textContent = value;
+                listElement.appendChild(li);
+            });
+        }
+
+         添加回车键支持
+        document.getElementById('inputValue').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkDuplicate();
+            }
+        });
+    script
+body
+html
